@@ -1,0 +1,20 @@
+{
+    "name": "hexlet/code",
+    "description": "second hexlet project",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Hexlet\\Code\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "daniil leontev"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "docopt/docopt": "^1.0"
+    }
+}
