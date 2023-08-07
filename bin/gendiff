@@ -31,6 +31,6 @@ $args = Docopt::handle($doc, array('version' => 'Gendiff 1.0'));
 //foreach ($args as $k => $v)
 //    echo $k . ': ' . json_encode($v) . PHP_EOL;
 
-$filePath1 = pathinfo($args['<firstFile>'], PATHINFO_EXTENSION);
-$filePath2 = pathinfo($args['<secondFile>'], PATHINFO_EXTENSION);
-echo genDiff($filePath1, $filePath2);
+$filePath1 = $args['<firstFile>'];
+$filePath2 = $args['<secondFile>'];
+genDiff($filePath1, $filePath2);
