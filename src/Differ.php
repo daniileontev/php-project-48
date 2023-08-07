@@ -2,46 +2,59 @@
 
 namespace Differ\Differ;
 
+use Exception;
 
-function getArrayDiff($arr1, $arr2)
+/**
+ * @throws Exception
+ */
+function genDiff(string $filePath1, string $filePath2, string $format = "stylish")
 {
+    $contentFromFile1 = getArrayFromJson($filePath1);
+    $contentFromFile2 = getArrayFromJson($filePath2);
+    
+    $keys = array_merge((array_keys($contentFromFile1)), array_keys($contentFromFile2));
+    sort($keys);
     $result = [];
-
-    foreach ($arr1 as $key => $value) {
-        if (!array_key_exists($key, $arr2)) {
-            $result[$key] = "- " . $value;
+    foreach ($keys as $key) {
+        if (!array_key_exists($key, $contentFromFile1)) {
+            $result[$key] = "added";
+        } elseif (!array_key_exists($key, $contentFromFile2)) {
+            $result[$key] = "deleted";
+        } elseif ($contentFromFile1[$key] !== $contentFromFile2[$key]) {
+            $result[$key] = "changed";
+        } else {
+            $result[$key] = "unchanged";
         }
     }
-
-    foreach ($arr2 as $key => $value) {
-        if (!array_key_exists($key, $arr1)) {
-            $result[$key] = "+ " . $value;
-        } elseif ($arr1[$key] !== $value) {
-            $result[$key] = "- " . $arr1[$key] . "\n  + " . $value;
+    echo "{" . "\n";
+    foreach ($result as $key => $value) {
+        switch ($value) {
+            case "added":
+                echo " + $key: $contentFromFile2[$key]" . "\n";
+                break;
+            case "deleted":
+                echo " - $key: $contentFromFile1[$key]" . "\n";
+                break;
+            case "changed":
+                echo " - $key: $contentFromFile1[$key]" . "\n";
+                echo " + $key: $contentFromFile2[$key]" . "\n";
+                break;
+            case "unchanged":
+                echo "   $key: $contentFromFile1[$key]" . "\n";
+                break;
+            default:
+                throw new Exception("Invalid value!");
         }
     }
-
-    return $result;
+    echo "}" . "\n";
 }
-
-//$file1 = ['a' => 'pop', 'b' => 'yes', 'c' => 11];
-//$file2 = ['b' => 'no', 'c' => 11, 'd' => 'false'];
-//print_r(getArrayDiff($file1, $file2));
 
 function getArrayFromJson($fileName)
 {
     $file = file_get_contents($fileName);
     return json_decode($file, true);
 }
-//$file1 = "../files/file1.json";
-//var_dump(getArrayFromJson($file1));
 
-function genDiff($filePath1, $filePath2)
-{
-    $firstArrayFile = getArrayFromJson($filePath1);
-    var_dump($firstArrayFile);
-    $secondArrayFile = getArrayFromJson($filePath2);
-    var_dump($secondArrayFile);
-    $result = getArrayDiff($firstArrayFile, $secondArrayFile);
-    return '{' . PHP_EOL . implode(PHP_EOL, $result) . PHP_EOL . '}';
-}
+//$file1 = "../files/file1.json";
+//$file2 = "../files/file2.json";
+//genDiff($file1, $file2);
