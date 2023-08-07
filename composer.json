@@ -9,7 +9,7 @@
     }
   ],
   "bin": [
-    "bin/gendiff"
+    "/bin/gendiff"
   ],
   "autoload": {
     "psr-4": {
