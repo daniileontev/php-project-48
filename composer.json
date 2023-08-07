@@ -1,8 +1,16 @@
 {
   "name": "hexlet/code",
   "description": "second hexlet project",
-  "type": "library",
+  "type": "project",
   "license": "MIT",
+  "authors": [
+    {
+      "name": "daniil leontev"
+    }
+  ],
+  "bin": [
+    "bin/gendiff"
+  ],
   "autoload": {
     "psr-4": {
       "Hexlet\\Code\\": "src/"
@@ -11,11 +19,6 @@
       "src/Differ.php"
     ]
   },
-  "authors": [
-    {
-      "name": "daniil leontev"
-    }
-  ],
   "minimum-stability": "stable",
   "require": {
     "docopt/docopt": "^1.0",
