@@ -4,7 +4,18 @@ namespace Differ\Differ;
 
 use Exception;
 
-
+function isBool(array $array): array
+{
+    return array_map(function ($value) {
+        if (is_bool($value)) {
+            return $value ? 'true' : 'false';
+        } elseif (is_null($value)) {
+            return 'null';
+        } else {
+            return $value;
+        }
+    }, $array);
+}
 
 /**
  * @throws Exception
@@ -13,6 +24,8 @@ function genDiff(string $filePath1, string $filePath2, string $format = "stylish
 {
     $contentFromFile1 = getArrayFromJson($filePath1);
     $contentFromFile2 = getArrayFromJson($filePath2);
+    $contentFromFile1 = isBool($contentFromFile1);
+    $contentFromFile2 = isBool($contentFromFile2);
 
     $keys = array_merge((array_keys($contentFromFile1)), array_keys($contentFromFile2));
     sort($keys);
