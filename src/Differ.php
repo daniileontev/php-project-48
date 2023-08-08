@@ -73,8 +73,3 @@ function getArrayFromJson($fileName)
     $file = file_get_contents($fileName);
     return json_decode($file, true);
 }
-
-//$file1 = "../files/file1.json";
-//$file2 = "../files/file2.json";
-//$diff = genDiff($file1, $file2);
-//print_r($diff);
