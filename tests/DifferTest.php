@@ -6,12 +6,8 @@ use PHPUnit\Framework\TestCase;
 
 use function Differ\Differ\genDiff;
 
-
-
 final class DifferTest extends TestCase
 {
-
-
     public function testGenDiff()
     {
         $filePath1 = 'tests/fixtures/file1.json';
@@ -26,5 +22,4 @@ final class DifferTest extends TestCase
 }';
         $this->assertEquals($expected, genDiff($filePath1, $filePath2));
     }
-
 }
