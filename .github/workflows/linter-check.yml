@@ -14,7 +14,7 @@ jobs:
         # Action gives to setup the PHP environment to test application
         # https://github.com/shivammathur/setup-php
         uses: shivammathur/setup-php@v2
-          with:
+        with:
           # Specify the PHP version
           php-version: '8.1'
 
