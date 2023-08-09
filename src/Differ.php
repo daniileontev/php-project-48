@@ -20,7 +20,7 @@ function isBool(array $array): array
 /**
  * @throws Exception
  */
-function genDiff(string $filePath1, string $filePath2, string $format = "stylish")
+function genDiff(string $filePath1, string $filePath2, string $format = "stylish"): string
 {
     $contentFromFile1 = getArrayFromJson($filePath1);
     $contentFromFile2 = getArrayFromJson($filePath2);
@@ -74,3 +74,7 @@ function getArrayFromJson($fileName)
     return json_decode($file, true);
 }
 
+//$file1 = "../tests/fixtures/file1.json";
+//$file2 = "../tests/fixtures/file2.json";
+
+//print_r(genDiff($file1, $file2));
