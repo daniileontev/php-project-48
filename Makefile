@@ -7,5 +7,7 @@ lint:
 test:
 	composer exec --verbose phpunit tests
 	#composer exec --verbose vendor/bin/phpstan analyse -l 6 src tests
+test-coverage:
+	composer exec --verbose phpunit tests -- --coverage-clover build/logs/clover.xml
 gendiff:
-	./bin/gendiff -h
+	./bin/gendiff -h	
