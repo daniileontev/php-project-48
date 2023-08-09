@@ -1,44 +1,30 @@
 <?php
-namespace
+
+namespace Differ\Phpunit\Tests\DifferTest;
+
 use PHPUnit\Framework\TestCase;
-use function Differ\Differ\isBool;
+
 use function Differ\Differ\genDiff;
-use function Differ\Differ\getArrayFromJson;
-use function Differ\Differ\getFixtureFullPath;
+
+
 
 final class DifferTest extends TestCase
 {
-    public function testIsBool(): void
+
+
+    public function testGenDiff()
     {
-        $data = [
-            'name' => 'John',
-            'age' => 30,
-            'isAdmin' => true,
-            'gender' => null,
-        ];
-
-        $expected = [
-            'name' => 'John',
-            'age' => 30,
-            'isAdmin' => 'true',
-            'gender' => 'null',
-        ];
-        $result = isBool($data);
-
-        $this->assertEquals($expected, $result);
+        $filePath1 = 'tests/fixtures/file1.json';
+        $filePath2 = 'tests/fixtures/file2.json';
+        $expected = '{
+ - follow: false
+   host: hexlet.io
+ - proxy: 123.234.53.22
+ - timeout: 50
+ + timeout: 20
+ + verbose: true
+}';
+        $this->assertEquals($expected, genDiff($filePath1, $filePath2));
     }
 
-
-//    public function testGenDiff(): void
-//    {
-//        $filePath1 = getFixtureFullPath('file1.json');
-//        $filePath2 = getFixtureFullPath('file1.json');
-//        $format = 'stylish';
-//
-//
-//        $expected = getFixtureFullPath('DifferTest.txt');
-//        $result = genDiff($filePath1, $filePath2, $format);
-//
-//        $this->assertEquals($expected, $result);
-//    }
 }
