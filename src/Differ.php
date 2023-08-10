@@ -4,6 +4,8 @@ namespace Differ\Differ;
 
 use Exception;
 
+use function Differ\Parser\getParseCode;
+
 function isBool(array $array): array
 {
     return array_map(function ($value) {
@@ -16,6 +18,15 @@ function isBool(array $array): array
         }
     }, $array);
 }
+
+
+function getArrayFromJson($pathToFile)
+{
+    $fileData = file_get_contents($pathToFile);
+    $extension = pathinfo($pathToFile, PATHINFO_EXTENSION);
+    return getParseCode($fileData, $extension);
+}
+
 
 /**
  * @throws Exception
@@ -67,14 +78,3 @@ function genDiff(string $filePath1, string $filePath2, string $format = "stylish
 
     return implode("\n", $result);
 }
-
-function getArrayFromJson($fileName)
-{
-    $file = file_get_contents($fileName);
-    return json_decode($file, true);
-}
-
-//$file1 = "../tests/fixtures/file1.json";
-//$file2 = "../tests/fixtures/file2.json";
-
-//print_r(genDiff($file1, $file2));
