@@ -10,8 +10,10 @@ final class DifferTest extends TestCase
 {
     public function testGenDiff()
     {
-        $filePath1 = 'tests/fixtures/file1.json';
-        $filePath2 = 'tests/fixtures/file2.json';
+        $jsonFilePath1 = 'tests/fixtures/file1.json';
+        $jsonFilePath2 = 'tests/fixtures/file2.json';
+        $yamlFilePath1 = 'tests/fixtures/file1.yaml';
+        $ymlFilePath2 = 'tests/fixtures/file2.yml';
         $expected = '{
  - follow: false
    host: hexlet.io
@@ -20,6 +22,7 @@ final class DifferTest extends TestCase
  + timeout: 20
  + verbose: true
 }';
-        $this->assertEquals($expected, genDiff($filePath1, $filePath2));
+        $this->assertEquals($expected, genDiff($jsonFilePath1, $jsonFilePath2));
+        $this->assertEquals($expected, genDiff($yamlFilePath1, $ymlFilePath2));
     }
 }
