@@ -16,3 +16,6 @@ $ make install
 
 ### Step 4 Asciinema:
 [![asciicast](https://asciinema.org/a/LUhfNnRgNlP2qBSeqCEK4xRWP.svg)](https://asciinema.org/a/LUhfNnRgNlP2qBSeqCEK4xRWP)
+
+### Step 6 Asciinema:
+[![asciicast](https://asciinema.org/a/zGS6QvLCOgudXjmenAuKcU9If.svg)](https://asciinema.org/a/zGS6QvLCOgudXjmenAuKcU9If)
