@@ -8,67 +8,29 @@ use function Differ\Differ\genDiff;
 
 final class DifferTest extends TestCase
 {
-    public function testGenDiff()
+    public function getFixtureFullPath($fixtureName): bool|string
     {
-//        $jsonFilePath1 = 'tests/fixtures/file3.json';
-//        $jsonFilePath2 = 'tests/fixtures/file4.json';
-//        $yamlFilePath1 = 'tests/fixtures/file1.yaml';
-//        $ymlFilePath2 = 'tests/fixtures/file2.yml';
-//        $expected = '{
-// - follow: false
-//   host: hexlet.io
-// - proxy: 123.234.53.22
-// - timeout: 50
-// + timeout: 20
-// + verbose: true
-//}';
-//        $this->assertEquals($expected, genDiff($jsonFilePath1, $jsonFilePath2));
-//        $this->assertEquals($expected, genDiff($yamlFilePath1, $ymlFilePath2));
+        $parts = [__DIR__, 'fixtures', $fixtureName];
+        return realpath(implode('/', $parts));
+    }
 
-        $expected2 = "{
-    common: {
-      + follow: false
-        setting1: Value 1
-      - setting2: 200
-      - setting3: true
-      + setting3: null
-      + setting4: blah blah
-      + setting5: {
-            key5: value5
-        }
-        setting6: {
-            doge: {
-              - wow:
-              + wow: so much
-            }
-            key: value
-          + ops: vops
-        }
+    public function testGenDiffJson()
+    {
+        $expected = file_get_contents($this->getFixtureFullPath("differJson.txt"));
+        $this->assertEquals($expected, genDiff(
+            $this->getFixtureFullPath("file1.json"),
+            $this->getFixtureFullPath("file2.json"),
+            'stylish'
+        ));
     }
-    group1: {
-      - baz: bas
-      + baz: bars
-        foo: bar
-      - nest: {
-            key: value
-        }
-      + nest: str
-    }
-  - group2: {
-        abc: 12345
-        deep: {
-            id: 45
-        }
-    }
-  + group3: {
-        deep: {
-            id: {
-                number: 45
-            }
-        }
-        fee: 100500
-    }
-}";
-        $this->assertEquals($expected2, genDiff('tests/fixtures/file1.json', 'tests/fixtures/file2.json'));
+
+    public function testGenDiffYaml()
+    {
+        $expected = file_get_contents($this->getFixtureFullPath("differJson.txt"));
+        $this->assertEquals($expected, genDiff(
+            $this->getFixtureFullPath("yamlFile1.yaml"),
+            $this->getFixtureFullPath("ymlFile2.yml"),
+            'stylish'
+        ));
     }
 }
