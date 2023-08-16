@@ -48,13 +48,9 @@ function getData(string $pathToFile): mixed
 
 function getParseCode(string $dataFile, string $extension): mixed
 {
-    switch ($extension) {
-        case 'json':
-            return json_decode($dataFile, true);
-        case 'yml':
-        case 'yaml':
-            return Yaml::parse($dataFile);
-        default:
-            throw new \Exception('Unknown extension ' . $extension);
-    }
+    return match ($extension) {
+        'json' => json_decode($dataFile, true),
+        'yml', 'yaml' => Yaml::parse($dataFile),
+        default => throw new \Exception('Unknown extension ' . $extension),
+    };
 }
