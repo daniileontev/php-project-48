@@ -33,4 +33,14 @@ final class DifferTest extends TestCase
             'stylish'
         ));
     }
+
+    public function testPlainDiff()
+    {
+        $expected = file_get_contents($this -> getFixtureFullPath("plain.txt"));
+        $this-> assertEquals($expected, genDiff(
+            $this->getFixtureFullPath("file1.json"),
+            $this->getFixtureFullPath("file2.json"),
+            "plain"
+        ));
+    }
 }
