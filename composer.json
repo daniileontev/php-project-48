@@ -22,6 +22,7 @@
       "src/Differ.php",
       "src/Parser.php",
       "src/formatters/stylish.php",
+      "src/formatters/plain.php",
       "src/Formatter.php"
     ]
   },
