@@ -16,7 +16,7 @@ final class DifferTest extends TestCase
 
     public function testGenDiffJson()
     {
-        $expected = file_get_contents($this->getFixtureFullPath("json.txt"));
+        $expected = file_get_contents($this->getFixtureFullPath("stylish.txt"));
         $this->assertEquals($expected, genDiff(
             $this->getFixtureFullPath("file1.json"),
             $this->getFixtureFullPath("file2.json")
@@ -25,7 +25,7 @@ final class DifferTest extends TestCase
 
     public function testGenDiffYaml()
     {
-        $expected = file_get_contents($this->getFixtureFullPath("json.txt"));
+        $expected = file_get_contents($this->getFixtureFullPath("stylish.txt"));
         $this->assertEquals($expected, genDiff(
             $this->getFixtureFullPath("yamlFile1.yaml"),
             $this->getFixtureFullPath("ymlFile2.yml"),
@@ -35,11 +35,21 @@ final class DifferTest extends TestCase
 
     public function testPlainDiff()
     {
-        $expected = file_get_contents($this -> getFixtureFullPath("plain.txt"));
-        $this-> assertEquals($expected, genDiff(
+        $expected = file_get_contents($this->getFixtureFullPath("plain.txt"));
+        $this->assertEquals($expected, genDiff(
             $this->getFixtureFullPath("file1.json"),
             $this->getFixtureFullPath("file2.json"),
             "plain"
+        ));
+    }
+
+    public function testJsonDiff()
+    {
+        $expected = file_get_contents($this->getFixtureFullPath("json.txt"));
+        $this->assertJsonStringEqualsJsonString($expected, genDiff(
+            $this->getFixtureFullPath("file1.json"),
+            $this->getFixtureFullPath("file2.json"),
+            "json"
         ));
     }
 }
