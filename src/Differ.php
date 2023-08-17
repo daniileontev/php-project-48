@@ -1,7 +1,6 @@
 <?php
 
 namespace Differ\Differ;
-//require_once "../src/Parser.php";
 
 use function Differ\Formatters\getFormat;
 use function Differ\Parser\getData;
@@ -19,48 +18,42 @@ function compareArrays(array $arr1, array $arr2): array
             $comparison = compareArrays($arr1[$key], $arr2[$key]);
             $result[] = [
                 'key' => $key,
-                'type'=> 'nested',
-                'value1'=> $comparison,
-                'value2'=> $comparison
+                'type' => 'nested',
+                'value1' => $comparison,
+                'value2' => $comparison
             ];
         } elseif (!array_key_exists($key, $arr2)) {
             $result[] = [
                 'key' => $key,
-                'type'=> 'removed',
-                'value1'=> $arr1[$key],
-                'value2'=> null
+                'type' => 'removed',
+                'value1' => $arr1[$key],
+                'value2' => null
             ];
         } elseif (!array_key_exists($key, $arr1)) {
             $result[] = [
                 'key' => $key,
-                'type'=> 'added',
-                'value1'=> null,
-                'value2'=> $arr2[$key]
+                'type' => 'added',
+                'value1' => null,
+                'value2' => $arr2[$key]
             ];
         } elseif ($arr1[$key] !== $arr2[$key]) {
             $result[] = [
                 'key' => $key,
-                'type'=> 'updated',
-                'value1'=> $arr1[$key],
-                'value2'=> $arr2[$key]
+                'type' => 'updated',
+                'value1' => $arr1[$key],
+                'value2' => $arr2[$key]
             ];
         } else {
             $result[] = [
                 'key' => $key,
-                'type'=> 'unchanged',
-                'value1'=> $arr1[$key],
-                'value2'=> $arr2[$key]
+                'type' => 'unchanged',
+                'value1' => $arr1[$key],
+                'value2' => $arr2[$key]
             ];
         }
     }
     return $result;
 }
-
-
-
-//$arr1 = getData("../tests/fixtures/file1.json");
-//$arr2 = getData("../tests/fixtures/file2.json");
-//print_r(compareArrays($arr1, $arr2));
 
 function genDiff(string $pathToFile1, string $pathToFile2, $format = "stylish"): string
 {
