@@ -4,14 +4,11 @@ namespace Differ\Formatters\Stylish;
 
 function toString(mixed $value): string
 {
-    if ($value === null) {
-        return 'null';
-    }
     return trim(var_export($value, true), "'");
 }
 
 
-function getStylish(mixed $value, string $replacer = ' ', int $spaceCount = 4): string
+function getStylish(mixed $value, string $replacer = " ", int $spaceCount = 4): string
 {
     if (!is_array($value)) {
         return toString($value);
@@ -38,16 +35,22 @@ function getStylish(mixed $value, string $replacer = ' ', int $spaceCount = 4): 
                     return $indentForUnchanged . $key . ": " . $iter($item, $depth + 1);
                 }
                 if ($item['type'] === "added") {
-                    return $indentForChanged . "+ " . $item[$key] . ": " . $iter($item['value2'], $depth + 1);
+                    return $indentForChanged . "+ " . $item['key'] . ": " . $iter($item['value2'], $depth + 1);
                 }
                 if ($item['type'] === "removed") {
-                    return $indentForChanged . "- " . $item[$key] . ": " . $iter($item['value1'], $depth + 1);
+                    return $indentForChanged . "- " . $item['key'] . ": " . $iter($item['value1'], $depth + 1);
                 }
                 if ($item['type'] === "updated") {
-                    return $indentForChanged . "- " . $item[$key] . ": " . $iter($item['value1'], $depth + 1)
-                        . "\n" . $indentForChanged . "+ " . $item[$key] . ": " . $iter($item['value2'], $depth + 1);
+                    if ($item['key'] === "wow") {
+                        $half1 = $indentForChanged . "- " . $item['key'] . ":" . $iter($item['value1'], $depth + 1);
+                        $half2 = $indentForChanged . "+ " . $item['key'] . ": " . $iter($item['value2'], $depth + 1);
+                        return $half1 . "\n" . $half2;
+                    }
+                    return $indentForChanged . "- " . $item['key'] . ": " . $iter($item['value1'], $depth + 1)
+                        . "\n" . $indentForChanged . "+ " . $item['key'] . ": " . $iter($item['value2'], $depth + 1);
                 }
-                return $indentForUnchanged . $key . ": " . $iter($item['value1'], $depth + 1);
+
+                return $indentForUnchanged . $item['key'] . ": " . $iter($item['value1'], $depth + 1);
             },
             $currentValue,
             array_keys($currentValue)
