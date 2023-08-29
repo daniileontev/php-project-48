@@ -2,6 +2,15 @@
 ### Hexlet tests and linter status:
 [![Actions Status](https://github.com/daniileontev/php-project-48/workflows/hexlet-check/badge.svg)](https://github.com/daniileontev/php-project-48/actions) [![linter-check](https://github.com/daniileontev/php-project-48/actions/workflows/linter-check.yml/badge.svg)](https://github.com/daniileontev/php-project-48/actions/workflows/linter-check.yml) [![Maintainability](https://api.codeclimate.com/v1/badges/ceeaa0731314bb5aeda7/maintainability)](https://codeclimate.com/github/daniileontev/php-project-48/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/ceeaa0731314bb5aeda7/test_coverage)](https://codeclimate.com/github/daniileontev/php-project-48/test_coverage)
 
+### The project
+```
+The project is running on PHP >= 8.1.
+
+Also you will need a "Make":
+    - For Ubuntu use "sudo apt install make".
+    - For Windows, you can use Chocolatey, then "choco install make".
+```
+
 ### Installation:
 ```
 $ git clone git@github.com:daniileontev/php-project-48.git

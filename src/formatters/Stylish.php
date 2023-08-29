@@ -7,7 +7,6 @@ function toString(mixed $value): string
     return trim(var_export($value, true), "'");
 }
 
-
 function getStylish(mixed $value, string $replacer = " ", int $spaceCount = 4): string
 {
     if (!is_array($value)) {

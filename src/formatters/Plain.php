@@ -2,7 +2,24 @@
 
 namespace Differ\Formatters\Plain;
 
-use function Differ\Parser\getNormalValue;
+function getNormalValue(mixed $value): mixed
+{
+    if (!is_array($value)) {
+        switch ($value) {
+            case 'null':
+            case 'true':
+            case 'false':
+                return $value;
+            default:
+                if (is_numeric($value)) {
+                    return $value;
+                }
+                return "'$value'";
+        }
+    }
+
+    return "[complex value]";
+}
 
 function getPlain($diff, $nextKey = ""): string
 {
@@ -25,7 +42,7 @@ function getPlain($diff, $nextKey = ""): string
                 return "Property '$newKey' was removed";
             case "added":
                 $normalValue = getNormalValue($value2);
-                return "Property '$newKey' was added with value: " . $normalValue;
+                return "Property '$newKey' was added with value: $normalValue";
             case "updated":
                 $normalValue1 = getNormalValue($value1);
                 $normalValue2 = getNormalValue($value2);
