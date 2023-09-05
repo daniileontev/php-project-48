@@ -4,21 +4,23 @@ namespace Differ\Formatters\Plain;
 
 function getNormalValue(mixed $value): mixed
 {
-    if (!is_array($value)) {
-        switch ($value) {
-            case 'null':
-            case 'true':
-            case 'false':
-                return $value;
-            default:
-                if (is_numeric($value)) {
-                    return $value;
-                }
-                return "'$value'";
-        }
+    if (is_bool($value)) {
+        return $value ? 'true' : 'false';
     }
 
-    return "[complex value]";
+    if (is_null($value)) {
+        return 'null';
+    }
+
+    if (is_string($value)) {
+        return "'$value'";
+    }
+
+    if (is_array($value)) {
+        return "[complex value]";
+    }
+
+    return $value;
 }
 
 function getPlain($diff, $nextKey = ""): string
@@ -26,14 +28,10 @@ function getPlain($diff, $nextKey = ""): string
     $newProperties = array_map(function ($node) use ($nextKey) {
         $key = $node['key'];
         $type = $node['type'];
-        $value1 = $node['value1'];
-        $value2 = $node['value2'];
+        $value1 = $node['value1'] ?? null;
+        $value2 = $node['value2'] ?? null;
 
-        if ($nextKey === "") {
-            $newKey = $key;
-        } else {
-            $newKey = $nextKey . "." . $key;
-        }
+        $newKey = $nextKey === "" ? $key : $nextKey . "." . $key;
 
         switch ($type) {
             case "nested":
@@ -41,12 +39,10 @@ function getPlain($diff, $nextKey = ""): string
             case "removed":
                 return "Property '$newKey' was removed";
             case "added":
-                $normalValue = getNormalValue($value2);
-                return "Property '$newKey' was added with value: $normalValue";
+                return "Property '$newKey' was added with value: " . getNormalValue($value1);
             case "updated":
-                $normalValue1 = getNormalValue($value1);
-                $normalValue2 = getNormalValue($value2);
-                return "Property '$newKey' was updated. From $normalValue1 to $normalValue2";
+                return "Property '$newKey' was updated. From " . getNormalValue($value1)
+                    . " to " . getNormalValue($value2);
             case "unchanged":
                 break;
             default:

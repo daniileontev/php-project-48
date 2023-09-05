@@ -2,125 +2,80 @@
 
 namespace Differ\Formatters\Stylish;
 
-function toString(mixed $value): string
+function formatToStringFromDiffTree(array $diffTree, int $depth = 0): array
 {
-    return trim(var_export($value, true), "'");
-}
+    $spaces = getSpaces($depth);
+    $depthOfDepth = $depth + 1;
+    $lines = function ($node) use ($spaces, $depthOfDepth) {
+        $key = $node['key'];
+        $type = $node['type'];
+        $value1 = $node['value1'];
+        $value2 = $node['value2'];
 
-function getStylish(mixed $value, string $replacer = " ", int $spaceCount = 4): string
-{
-    if (!is_array($value)) {
-        return toString($value);
-    }
-
-    return formatStylish($value, $replacer, $spaceCount, 1);
-}
-
-function formatStylish(mixed $value, string $replacer, int $spaceCount, int $depth): string
-{
-    if (!is_array($value)) {
-        return toString($value);
-    }
-
-    $indentLength = $spaceCount * $depth;
-    $shiftToLeft = 2;
-    $indentForUnchanged = str_repeat($replacer, $indentLength);
-    $indentForChanged = str_repeat($replacer, $indentLength - $shiftToLeft);
-    $bracketIndent = str_repeat($replacer, $indentLength - $spaceCount);
-
-    $lines = [];
-    foreach ($value as $key => $item) {
-        if (!is_array($item) || !array_key_exists('type', $item)) {
-            $lines[] = $indentForUnchanged . $key . ": " .
-                formatStylish($item, $replacer, $spaceCount, $depth + 1);
-            continue;
-        }
-
-        switch ($item['type']) {
-            case "added":
-                $lines[] = $indentForChanged . "+ " . $item['key'] . ": " .
-                    formatStylish($item['value2'], $replacer, $spaceCount, $depth + 1);
-                break;
-            case "removed":
-                $lines[] = $indentForChanged . "- " . $item['key'] . ": " .
-                    formatStylish($item['value1'], $replacer, $spaceCount, $depth + 1);
-                break;
-            case "updated":
-                if ($item['key'] === "wow") {
-                    $lines[] = $indentForChanged . "- " . $item['key'] . ":" .
-                        formatStylish($item['value1'], $replacer, $spaceCount, $depth + 1);
-                    $lines[] = $indentForChanged . "+ " . $item['key'] . ": " .
-                        formatStylish($item['value2'], $replacer, $spaceCount, $depth + 1);
-                } else {
-                    $lines[] = $indentForChanged . "- " . $item['key'] . ": " .
-                        formatStylish($item['value1'], $replacer, $spaceCount, $depth + 1);
-                    $lines[] = $indentForChanged . "+ " . $item['key'] . ": " .
-                        formatStylish($item['value2'], $replacer, $spaceCount, $depth + 1);
-                }
-                break;
+        switch ($type) {
+            case 'nested':
+                $nested = formatToStringFromDiffTree($value1, $depthOfDepth);
+                $stringifiedNest = implode("\n", $nested);
+                return "{$spaces}    {$key}: {\n{$stringifiedNest}\n{$spaces}    }";
+            case 'unchanged':
+                $stringifiedValue1 = valueToString($value1, $depthOfDepth);
+                return "{$spaces}    {$key}: {$stringifiedValue1}";
+            case 'added':
+                $stringifiedValue1 = valueToString($value1, $depthOfDepth);
+                return "{$spaces}  + {$key}: {$stringifiedValue1}";
+            case 'removed':
+                $stringifiedValue1 = valueToString($value1, $depthOfDepth);
+                return "{$spaces}  - {$key}: {$stringifiedValue1}";
+            case 'updated':
+                $stringifiedValue1 = valueToString($value1, $depthOfDepth);
+                $stringifiedValue2 = valueToString($value2, $depthOfDepth);
+                return "{$spaces}  - {$key}: {$stringifiedValue1}\n{$spaces}  + {$key}: {$stringifiedValue2}";
             default:
-                $lines[] = $indentForUnchanged . $item['key'] . ": " .
-                    formatStylish($item['value1'], $replacer, $spaceCount, $depth + 1);
-                break;
+                throw new \Exception("Unknown type - " . $type);
         }
-    }
-
-    $lines = ['{', ...$lines, $bracketIndent . '}'];
-
-    return implode("\n", $lines);
+    };
+    return array_map($lines, $diffTree);
 }
 
-//function getStylish(mixed $value, string $replacer = " ", int $spaceCount = 4): string
-//{
-//    if (!is_array($value)) {
-//        return toString($value);
-//    }
-//
-//    $iter = function ($currentValue, $depth) use (&$iter, $replacer, $spaceCount) {
-//
-//        if (!is_array($currentValue)) {
-//            return toString($currentValue);
-//        }
-//
-//        $indentLength = $spaceCount * $depth;
-//        $shiftToLeft = 2;
-//        $indentForUnchanged = str_repeat($replacer, $indentLength);
-//        $indentForChanged = str_repeat($replacer, $indentLength - $shiftToLeft);
-//        $bracketIndent = str_repeat($replacer, $indentLength - $spaceCount);
-//
-//        $line = array_map(
-//            function ($item, $key) use ($iter, $indentForChanged, $indentForUnchanged, $depth) {
-//                if (!is_array($item)) {
-//                    return $indentForUnchanged . $key . ": " . $iter($item, $depth + 1);
-//                }
-//                if (!array_key_exists('type', $item)) {
-//                    return $indentForUnchanged . $key . ": " . $iter($item, $depth + 1);
-//                }
-//                if ($item['type'] === "added") {
-//                    return $indentForChanged . "+ " . $item['key'] . ": " . $iter($item['value2'], $depth + 1);
-//                }
-//                if ($item['type'] === "removed") {
-//                    return $indentForChanged . "- " . $item['key'] . ": " . $iter($item['value1'], $depth + 1);
-//                }
-//                if ($item['type'] === "updated") {
-//                    if ($item['key'] === "wow") {
-//                        $half1 = $indentForChanged . "- " . $item['key'] . ":" . $iter($item['value1'], $depth + 1);
-//                        $half2 = $indentForChanged . "+ " . $item['key'] . ": " . $iter($item['value2'], $depth + 1);
-//                        return $half1 . "\n" . $half2;
-//                    }
-//                    return $indentForChanged . "- " . $item['key'] . ": " . $iter($item['value1'], $depth + 1)
-//                        . "\n" . $indentForChanged . "+ " . $item['key'] . ": " . $iter($item['value2'], $depth + 1);
-//                }
-//
-//                return $indentForUnchanged . $item['key'] . ": " . $iter($item['value1'], $depth + 1);
-//            },
-//            $currentValue,
-//            array_keys($currentValue)
-//        );
-//
-//        $result = ['{', ...$line, $bracketIndent . '}'];
-//
-//        return implode("\n", $result);
-//    };
-//    return $iter($value, 1);
-//}
+function getSpaces(int $depth): string
+{
+    return str_repeat("    ", $depth);
+}
+
+function valueToString(mixed $value, int $depth): string
+{
+    if (is_null($value)) {
+        return 'null';
+    }
+    if (is_bool($value)) {
+        return $value ? 'true' : 'false';
+    }
+    if (is_array($value)) {
+        $result = convertArrayToString($value, $depth);
+        $spaces = getSpaces($depth);
+        return "{{$result}\n{$spaces}}";
+    }
+    return "$value";
+}
+
+function convertArrayToString(array $value, int $depth): string
+{
+    $keys = array_keys($value);
+    $depthOfDepth = $depth + 1;
+
+    $callback = function ($key) use ($value, $depthOfDepth) {
+        $newValue = valueToString($value[$key], $depthOfDepth);
+        $spaces = getSpaces($depthOfDepth);
+
+        return "\n$spaces$key: $newValue";
+    };
+
+    return implode('', array_map($callback, $keys));
+}
+function getStylish(array $diffTree): string
+{
+    $formattedDiff = formatToStringFromDiffTree($diffTree);
+    $result = implode("\n", $formattedDiff);
+
+    return "{\n$result\n}";
+}
