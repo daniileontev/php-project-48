@@ -7,7 +7,7 @@
 
 ### The project requirements:
 ```
-PHP >= 8.1.
+PHP >= 8.1
 Composer
 Makefile:
     - For Ubuntu use "sudo apt install make".
