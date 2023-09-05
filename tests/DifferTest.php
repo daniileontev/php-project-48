@@ -16,39 +16,39 @@ final class DifferTest extends TestCase
 
     public function testGenDiffJson()
     {
-        $expected = file_get_contents($this->getFixtureFullPath("stylish.txt"));
+        $expected = file_get_contents($this->getFixtureFullPath("expectedStylish"));
         $this->assertEquals($expected, genDiff(
-            $this->getFixtureFullPath("file1.json"),
-            $this->getFixtureFullPath("file2.json")
+            $this->getFixtureFullPath("file3.json"),
+            $this->getFixtureFullPath("file4.json")
         ));
     }
 
     public function testGenDiffYaml()
     {
-        $expected = file_get_contents($this->getFixtureFullPath("stylish.txt"));
+        $expected = file_get_contents($this->getFixtureFullPath("expectedStylish"));
         $this->assertEquals($expected, genDiff(
-            $this->getFixtureFullPath("yamlFile1.yaml"),
-            $this->getFixtureFullPath("ymlFile2.yml"),
+            $this->getFixtureFullPath("file3.yaml"),
+            $this->getFixtureFullPath("file4.yml"),
             'stylish'
         ));
     }
 
     public function testPlainDiff()
     {
-        $expected = file_get_contents($this->getFixtureFullPath("plain.txt"));
+        $expected = file_get_contents($this->getFixtureFullPath("expectedPlain"));
         $this->assertEquals($expected, genDiff(
-            $this->getFixtureFullPath("file1.json"),
-            $this->getFixtureFullPath("file2.json"),
+            $this->getFixtureFullPath("file3.json"),
+            $this->getFixtureFullPath("file4.json"),
             "plain"
         ));
     }
 
     public function testJsonDiff()
     {
-        $expected = file_get_contents($this->getFixtureFullPath("json.txt"));
+        $expected = file_get_contents($this->getFixtureFullPath("expectedJson"));
         $this->assertJsonStringEqualsJsonString($expected, genDiff(
-            $this->getFixtureFullPath("file1.json"),
-            $this->getFixtureFullPath("file2.json"),
+            $this->getFixtureFullPath("file3.json"),
+            $this->getFixtureFullPath("file4.json"),
             "json"
         ));
     }
