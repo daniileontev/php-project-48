@@ -6,7 +6,7 @@ use function Differ\Formatters\getFormat;
 use function Differ\Parser\getParseCode;
 use function Functional\sort;
 
-function makeSortedKeys(array $data1, array $data2)
+function makeSortedKeys(array $data1, array $data2): array
 {
     $data1Keys = array_keys($data1);
     $data2Keys = array_keys($data2);
@@ -69,7 +69,7 @@ function buildDiffTree(array $data1, array $data2): array
     return array_map($tree, $sortedKeys);
 }
 
-function genDiff(string $pathToFile1, string $pathToFile2, $format = "stylish"): string
+function genDiff(string $pathToFile1, string $pathToFile2, string $format = "stylish"): string
 {
     $fileData1 = getParseCode($pathToFile1);
     $fileData2 = getParseCode($pathToFile2);

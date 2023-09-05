@@ -13,14 +13,14 @@ function getRealPath(string $pathToFile): string
     return $fullPath;
 }
 
-function getDataFile(string $pathToFile): string|bool
+function getDataFile(string $pathToFile): string
 {
     $fullPath = getRealPath($pathToFile);
     return file_get_contents($fullPath);
 }
 
 
-function getParseCode(string $pathToFile)
+function getParseCode(string $pathToFile): mixed
 {
     $fileData = getDataFile($pathToFile);
     $extension = pathinfo($pathToFile, PATHINFO_EXTENSION);

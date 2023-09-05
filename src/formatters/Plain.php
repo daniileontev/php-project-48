@@ -23,7 +23,7 @@ function getNormalValue(mixed $value): mixed
     return $value;
 }
 
-function getPlain($diff, $nextKey = ""): string
+function getPlain(array $diff, string $nextKey = ""): string
 {
     $newProperties = array_map(function ($node) use ($nextKey) {
         $key = $node['key'];
