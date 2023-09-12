@@ -4,29 +4,11 @@ namespace Differ\Parser;
 
 use Symfony\Component\Yaml\Yaml;
 
-function getRealPath(string $pathToFile): string
+function getParseCode($fileData, $format): mixed
 {
-    $fullPath = realpath($pathToFile);
-    if ($fullPath === false) {
-        throw new \Exception("File does not exists");
-    }
-    return $fullPath;
-}
-
-function getDataFile(string $pathToFile): string
-{
-    $fullPath = getRealPath($pathToFile);
-    return file_get_contents($fullPath);
-}
-
-
-function getParseCode(string $pathToFile): mixed
-{
-    $fileData = getDataFile($pathToFile);
-    $extension = pathinfo($pathToFile, PATHINFO_EXTENSION);
-    return match ($extension) {
+    return match ($format) {
         'json' => json_decode($fileData, true),
         'yml', 'yaml' => Yaml::parse($fileData),
-        default => throw new \Exception('Unknown extension ' . $extension),
+        default => throw new \Exception("Unknown extension - $format"),
     };
 }

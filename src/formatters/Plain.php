@@ -2,7 +2,7 @@
 
 namespace Differ\Formatters\Plain;
 
-function getNormalValue(mixed $value): mixed
+function getNormalValue(mixed $value): string
 {
     if (is_bool($value)) {
         return $value ? 'true' : 'false';
@@ -31,22 +31,26 @@ function getPlain(array $diff, string $nextKey = ""): string
         $value1 = $node['value1'] ?? null;
         $value2 = $node['value2'] ?? null;
 
-        $newKey = $nextKey === "" ? $key : $nextKey . "." . $key;
+        $newKey = $nextKey === "" ? $key : "$nextKey.$key";
 
         switch ($type) {
             case "nested":
                 return getPlain($value1, $newKey);
             case "removed":
-                return "Property '$newKey' was removed";
+                return sprintf("Property '%s' was removed", $newKey);
             case "added":
-                return "Property '$newKey' was added with value: " . getNormalValue($value1);
+                return sprintf("Property '%s' was added with value: %s", $newKey, getNormalValue($value1));
             case "updated":
-                return "Property '$newKey' was updated. From " . getNormalValue($value1)
-                    . " to " . getNormalValue($value2);
+                return sprintf(
+                    "Property '%s' was updated. From %s to %s",
+                    $newKey,
+                    getNormalValue($value1),
+                    getNormalValue($value2)
+                );
             case "unchanged":
                 break;
             default:
-                throw new \Exception("Unknown type - " . $type);
+                throw new \Exception("Unknown type - $type");
         }
     }, $diff);
 
