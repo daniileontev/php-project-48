@@ -9,8 +9,7 @@ function formatToStringFromDiffTree(array $diffTree, int $depth = 0): array
     return array_map(function ($node) use ($spaces, $depthOfDepth) {
         $key = $node['key'];
         $type = $node['type'];
-        $value1 = $node['value1'] ?? null;
-        $value2 = $node['value2'] ?? null;
+        $value1 = $node['value1'];
 
         switch ($type) {
             case 'nested':
@@ -28,7 +27,7 @@ function formatToStringFromDiffTree(array $diffTree, int $depth = 0): array
                 return "{$spaces}  - {$key}: {$stringifiedValue1}";
             case 'updated':
                 $stringifiedValue1 = valueToString($value1, $depthOfDepth);
-                $stringifiedValue2 = valueToString($value2, $depthOfDepth);
+                $stringifiedValue2 = valueToString($node['value2'], $depthOfDepth);
                 return "{$spaces}  - {$key}: {$stringifiedValue1}\n{$spaces}  + {$key}: {$stringifiedValue2}";
             default:
                 throw new \Exception("Unknown type - $type");

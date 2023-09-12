@@ -42,19 +42,19 @@ function buildDiffTree(array $data1, array $data2): array
             ];
         }
 
-        if ($value1 !== $value2) {
+        if ($value1 === $value2) {
             return [
                 'key' => $key,
-                'type' => 'updated',
+                'type' => 'unchanged',
                 'value1' => $value1,
-                'value2' => $value2
             ];
         }
 
         return [
             'key' => $key,
-            'type' => 'unchanged',
+            'type' => 'updated',
             'value1' => $value1,
+            'value2' => $value2
         ];
     };
     return array_map($tree, $sortedKeys);
