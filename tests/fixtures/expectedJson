@@ -2,52 +2,52 @@
   {
     "type": "nested",
     "key": "common",
-    "value1": [
+    "value": [
       {
         "type": "added",
         "key": "follow",
-        "value1": false
+        "value": false
       },
       {
         "type": "unchanged",
         "key": "setting1",
-        "value1": "Value 1"
+        "value": "Value 1"
       },
       {
         "type": "removed",
         "key": "setting2",
-        "value1": 200
+        "value": 200
       },
       {
         "type": "updated",
         "key": "setting3",
-        "value1": true,
+        "value": true,
         "value2": null
       },
       {
         "type": "added",
         "key": "setting4",
-        "value1": "blah blah"
+        "value": "blah blah"
       },
       {
         "type": "added",
         "key": "setting5",
-        "value1": {
+        "value": {
           "key5": "value5"
         }
       },
       {
         "type": "nested",
         "key": "setting6",
-        "value1": [
+        "value": [
           {
             "type": "nested",
             "key": "doge",
-            "value1": [
+            "value": [
               {
                 "type": "updated",
                 "key": "wow",
-                "value1": "",
+                "value": "",
                 "value2": "so much"
               }
             ]
@@ -55,12 +55,12 @@
           {
             "type": "unchanged",
             "key": "key",
-            "value1": "value"
+            "value": "value"
           },
           {
             "type": "added",
             "key": "ops",
-            "value1": "vops"
+            "value": "vops"
           }
         ]
       }
@@ -69,22 +69,22 @@
   {
     "type": "nested",
     "key": "group1",
-    "value1": [
+    "value": [
       {
         "type": "updated",
         "key": "baz",
-        "value1": "bas",
+        "value": "bas",
         "value2": "bars"
       },
       {
         "type": "unchanged",
         "key": "foo",
-        "value1": "bar"
+        "value": "bar"
       },
       {
         "type": "updated",
         "key": "nest",
-        "value1": {
+        "value": {
           "key": "value"
         },
         "value2": "str"
@@ -94,7 +94,7 @@
   {
     "type": "removed",
     "key": "group2",
-    "value1": {
+    "value": {
       "abc": 12345,
       "deep": {
         "id": 45
@@ -104,7 +104,7 @@
   {
     "type": "added",
     "key": "group3",
-    "value1": {
+    "value": {
       "deep": {
         "id": {
           "number": 45
