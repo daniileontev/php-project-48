@@ -11,4 +11,4 @@ test:
 test-coverage:
 	composer exec XDEBUG_MODE=coverage --verbose phpunit tests -- --coverage-clover build/logs/clover.xml
 gendiff:
-	bin/gendiff
+	bin/gendiff -h

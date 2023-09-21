@@ -28,23 +28,23 @@ function getPlain(array $diff, string $nextKey = ""): string
     $newProperties = array_map(function ($node) use ($nextKey) {
         $key = $node['key'];
         $type = $node['type'];
-        $value1 = $node['value1'] ?? null;
+        $value = $node['value'] ?? null;
         $value2 = $node['value2'] ?? null;
 
         $newKey = $nextKey === "" ? $key : "$nextKey.$key";
 
         switch ($type) {
             case "nested":
-                return getPlain($value1, $newKey);
+                return getPlain($value, $newKey);
             case "removed":
                 return sprintf("Property '%s' was removed", $newKey);
             case "added":
-                return sprintf("Property '%s' was added with value: %s", $newKey, getNormalValue($value1));
+                return sprintf("Property '%s' was added with value: %s", $newKey, getNormalValue($value));
             case "updated":
                 return sprintf(
                     "Property '%s' was updated. From %s to %s",
                     $newKey,
-                    getNormalValue($value1),
+                    getNormalValue($value),
                     getNormalValue($value2)
                 );
             case "unchanged":
