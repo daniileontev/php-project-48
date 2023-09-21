@@ -12,9 +12,8 @@ function buildDiffTree(array $data1, array $data2): array
     $data2Keys = array_keys($data2);
     $mergedKeys = array_merge($data1Keys, $data2Keys);
     $uniqueKeys = array_unique($mergedKeys);
-    usort($uniqueKeys, function ($left, $right) {
-        return strnatcmp($left, $right);
-    });
+
+    sort($uniqKeys, fn ($left, $right) => $left <=> $right);
 
     return array_map(function ($key) use ($data1, $data2) {
         $value = $data1[$key] ?? null;
