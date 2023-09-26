@@ -17,17 +17,17 @@ function formatToStringFromDiffTree(array $diffTree, int $depth = 0): array
                 $stringifiedNest = implode("\n", $nested);
                 return "{$spaces}    {$key}: {\n{$stringifiedNest}\n{$spaces}    }";
             case 'unchanged':
-                $stringifiedValue1 = valueToString($value, $depthOfDepth);
+                $stringifiedValue1 = getValueToString($value, $depthOfDepth);
                 return "{$spaces}    {$key}: {$stringifiedValue1}";
             case 'added':
-                $stringifiedValue1 = valueToString($value, $depthOfDepth);
+                $stringifiedValue1 = getValueToString($value, $depthOfDepth);
                 return "{$spaces}  + {$key}: {$stringifiedValue1}";
             case 'removed':
-                $stringifiedValue1 = valueToString($value, $depthOfDepth);
+                $stringifiedValue1 = getValueToString($value, $depthOfDepth);
                 return "{$spaces}  - {$key}: {$stringifiedValue1}";
             case 'updated':
-                $stringifiedValue1 = valueToString($value, $depthOfDepth);
-                $stringifiedValue2 = valueToString($node['value2'], $depthOfDepth);
+                $stringifiedValue1 = getValueToString($value, $depthOfDepth);
+                $stringifiedValue2 = getValueToString($node['value2'], $depthOfDepth);
                 return "{$spaces}  - {$key}: {$stringifiedValue1}\n{$spaces}  + {$key}: {$stringifiedValue2}";
             default:
                 throw new \Exception("Unknown type - $type");
@@ -35,12 +35,12 @@ function formatToStringFromDiffTree(array $diffTree, int $depth = 0): array
     }, $diffTree);
 }
 
-function buildIndent(int $depth)
+function buildIndent(int $depth): string
 {
     return str_repeat("    ", $depth);
 }
 
-function valueToString(mixed $value, int $depth): string
+function getValueToString(mixed $value, int $depth): string
 {
     if (is_null($value)) {
         return 'null';
@@ -62,7 +62,7 @@ function convertArrayToString(array $value, int $depth): string
     $depthOfDepth = $depth + 1;
 
     return implode('', array_map(function ($key) use ($value, $depthOfDepth) {
-        $newValue = valueToString($value[$key], $depthOfDepth);
+        $newValue = getValueToString($value[$key], $depthOfDepth);
         $spaces = buildIndent($depthOfDepth);
 
         return "\n$spaces$key: $newValue";

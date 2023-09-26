@@ -12,7 +12,7 @@ function buildDiffTree(array $data1, array $data2): array
     $data2Keys = array_keys($data2);
     $mergedKeys = array_merge($data1Keys, $data2Keys);
     $uniqueKeys = array_unique($mergedKeys);
-    $sortedKeys = sort($uniqueKeys, fn ($left, $right) => strcmp($left, $right));
+    $sortedKeys = sort($uniqueKeys, fn($left, $right) => strcmp($left, $right));
 
     return array_map(function ($key) use ($data1, $data2) {
         $value = $data1[$key] ?? null;
@@ -61,8 +61,9 @@ function buildDiffTree(array $data1, array $data2): array
 
 function getFileData(string $pathToFile): string
 {
-    $fileData = file_get_contents($pathToFile);
-    if ($fileData === false) {
+    if (file_exists($pathToFile)) {
+        $fileData = file_get_contents($pathToFile);
+    } else {
         throw new \Exception("Can't read file");
     }
     return $fileData;
