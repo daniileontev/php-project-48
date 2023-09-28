@@ -4,9 +4,9 @@ namespace Differ\Formatters\Stylish;
 
 function formatToStringFromDiffTree(array $diffTree, int $depth = 0): array
 {
-    $spaces = buildIndent($depth);
+    $indent = buildIndent($depth);
     $depthOfDepth = $depth + 1;
-    return array_map(function ($node) use ($spaces, $depthOfDepth) {
+    return array_map(function ($node) use ($indent, $depthOfDepth) {
         $key = $node['key'];
         $type = $node['type'];
         $value = $node['value'];
@@ -15,20 +15,20 @@ function formatToStringFromDiffTree(array $diffTree, int $depth = 0): array
             case 'nested':
                 $nested = formatToStringFromDiffTree($value, $depthOfDepth);
                 $stringifiedNest = implode("\n", $nested);
-                return "{$spaces}    {$key}: {\n{$stringifiedNest}\n{$spaces}    }";
+                return "{$indent}    {$key}: {\n{$stringifiedNest}\n{$indent}    }";
             case 'unchanged':
-                $stringifiedValue1 = valueToString($value, $depthOfDepth);
-                return "{$spaces}    {$key}: {$stringifiedValue1}";
+                $stringifiedValue = valueToString($value, $depthOfDepth);
+                return "{$indent}    {$key}: {$stringifiedValue}";
             case 'added':
-                $stringifiedValue1 = valueToString($value, $depthOfDepth);
-                return "{$spaces}  + {$key}: {$stringifiedValue1}";
+                $stringifiedValue = valueToString($value, $depthOfDepth);
+                return "{$indent}  + {$key}: {$stringifiedValue}";
             case 'removed':
-                $stringifiedValue1 = valueToString($value, $depthOfDepth);
-                return "{$spaces}  - {$key}: {$stringifiedValue1}";
+                $stringifiedValue = valueToString($value, $depthOfDepth);
+                return "{$indent}  - {$key}: {$stringifiedValue}";
             case 'updated':
-                $stringifiedValue1 = valueToString($value, $depthOfDepth);
+                $stringifiedValue = valueToString($value, $depthOfDepth);
                 $stringifiedValue2 = valueToString($node['value2'], $depthOfDepth);
-                return "{$spaces}  - {$key}: {$stringifiedValue1}\n{$spaces}  + {$key}: {$stringifiedValue2}";
+                return "{$indent}  - {$key}: {$stringifiedValue}\n{$indent}  + {$key}: {$stringifiedValue2}";
             default:
                 throw new \Exception("Unknown type - $type");
         }
