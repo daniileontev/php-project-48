@@ -50,8 +50,8 @@ function valueToString(mixed $value, int $depth): string
     }
     if (is_array($value)) {
         $result = convertArrayToString($value, $depth);
-        $spaces = buildIndent($depth);
-        return "{{$result}\n{$spaces}}";
+        $indent = buildIndent($depth);
+        return "{{$result}\n{$indent}}";
     }
     return "$value";
 }
@@ -63,9 +63,9 @@ function convertArrayToString(array $value, int $depth): string
 
     return implode('', array_map(function ($key) use ($value, $depthOfDepth) {
         $newValue = valueToString($value[$key], $depthOfDepth);
-        $spaces = buildIndent($depthOfDepth);
+        $indent = buildIndent($depthOfDepth);
 
-        return "\n$spaces$key: $newValue";
+        return "\n$indent$key: $newValue";
     }, $keys));
 }
 
